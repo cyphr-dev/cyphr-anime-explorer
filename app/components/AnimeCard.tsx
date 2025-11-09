@@ -51,8 +51,8 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
     return (
       <Link to={`/anime/${anime.mal_id}`} className="group">
         <Card className="overflow-hidden transition-all hover:shadow-lg">
-          <div className="flex flex-col sm:flex-row h-56">
-            <div className="w-full sm:w-48 h-64 sm:h-auto relative overflow-hidden shrink-0">
+          <div className="flex flex-row h-56">
+            <div className="min-w-48 h-64 sm:h-auto relative overflow-hidden">
               <img
                 src={anime.images.jpg.large_image_url}
                 alt={anime.title}
@@ -74,38 +74,42 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
                 />
               </button>
             </div>
-            <div className="flex-1 p-4 sm:p-6">
-              <CardTitle className="mb-2 group-hover:text-purple-600 transition-colors">
-                {anime.title}
-              </CardTitle>
-              {anime.synopsis && (
-                <p className="text-muted-foreground line-clamp-3 mb-4">
-                  {anime.synopsis}
-                </p>
-              )}
-              <div className="flex flex-wrap gap-2 mb-4">
-                {anime.type && <Badge variant="secondary">{anime.type}</Badge>}
-                {anime.episodes && (
-                  <Badge variant="outline">{anime.episodes} episodes</Badge>
+            <div className="p-4 sm:p-6 flex flex-col justify-between flex-1">
+              <div className="flex flex-col gap-2">
+                <CardTitle className="line-clamp-1">
+                  <h5>{anime.title}</h5>
+                </CardTitle>
+                {anime.synopsis && (
+                  <p className="text-muted-foreground line-clamp-3">
+                    {anime.synopsis}
+                  </p>
                 )}
-                {anime.status && (
-                  <Badge variant="outline">{anime.status}</Badge>
-                )}
+                <div className="flex flex-wrap gap-2">
+                  {anime.type && (
+                    <Badge variant="secondary">{anime.type}</Badge>
+                  )}
+                  {anime.episodes && (
+                    <Badge variant="outline">{anime.episodes} episodes</Badge>
+                  )}
+                  {anime.status && (
+                    <Badge variant="outline">{anime.status}</Badge>
+                  )}
+                </div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 mt-3 w-full">
                 {anime.score && (
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span>{anime.score.toFixed(1)}</span>
+                    <p>{anime.score.toFixed(1)}</p>
                   </div>
                 )}
                 {anime.year && (
-                  <span className="text-muted-foreground">{anime.year}</span>
+                  <p className="text-muted-foreground">{anime.year}</p>
                 )}
                 {anime.popularity && (
-                  <span className="text-muted-foreground">
+                  <p className="text-muted-foreground">
                     #{anime.popularity} popularity
-                  </span>
+                  </p>
                 )}
               </div>
             </div>
@@ -114,7 +118,6 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
       </Link>
     );
   }
-
   return (
     <Link to={`/anime/${anime.mal_id}`} className="group">
       <Card className="h-full overflow-hidden transition-all hover:shadow-lg hover:scale-105">
@@ -186,7 +189,7 @@ export function AnimeCardSkeleton() {
 
 export function AnimeListSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       {Array.from({ length: 25 }).map((_, i) => (
         <AnimeCardSkeleton key={i} />
       ))}

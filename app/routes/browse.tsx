@@ -284,12 +284,107 @@ export default function Home() {
     };
   }, [infiniteScrollMode, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  const renderContent = () => {
+    // Loading state - Show grid skeleton on initial load
+    if (isLoading && animes.length === 0) {
+      return <AnimeListSkeleton />;
+    }
+
+    // Error state
+    else if (error) {
+      return (
+        <AnimeEmptyState
+          type={
+            error.message?.includes("network") ||
+            error.message?.includes("fetch")
+              ? "network-error"
+              : "error"
+          }
+          description={
+            error instanceof Error ? error.message : "An error occurred"
+          }
+          action={{
+            label: "Try Again",
+            onClick: () => {
+              if (infiniteScrollMode) {
+                infiniteQuery.refetch();
+              } else {
+                paginationQuery.refetch();
+              }
+            },
+          }}
+        />
+      );
+    }
+
+    // Content with data
+    else
+      return (
+        <>
+          <div
+            className={
+              viewMode === "grid"
+                ? " grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                : "col-span-1 md:col-span-8 flex flex-col gap-4"
+            }
+          >
+            {animes.map((anime) => (
+              <AnimeCard key={anime.mal_id} anime={anime} viewMode={viewMode} />
+            ))}
+          </div>
+
+          {/* Infinite Scroll Trigger */}
+          {infiniteScrollMode && hasNextPage && (
+            <div ref={loadMoreRef} className="col-span-8 py-8 text-center">
+              {isFetchingNextPage && (
+                <p className="text-muted-foreground">Loading more...</p>
+              )}
+            </div>
+          )}
+
+          {/* Pagination */}
+          {!infiniteScrollMode && animes.length > 0 && (
+            <div className="col-span-8 flex justify-center items-center gap-4 mt-8">
+              <Button
+                variant="outline"
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                Previous
+              </Button>
+              <span className="text-muted-foreground">
+                Page {pagination.currentPage} of {pagination.lastVisiblePage}
+              </span>
+              <Button
+                variant="outline"
+                disabled={!pagination.hasNextPage}
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                Next
+              </Button>
+            </div>
+          )}
+
+          {animes.length === 0 && (
+            <AnimeEmptyState
+              type="no-results"
+              action={{
+                label: "Clear Filters",
+                onClick: handleClearFilters,
+              }}
+              className="col-span-8"
+            />
+          )}
+        </>
+      );
+  };
+
   return (
-    <div className="min-h-screen container mx-auto py-8 px-4">
-      <div className="grid grid-cols-1 md:grid-cols-10 gap-8">
-        {/* Search and Filters */}
-        <div className="col-span-10 lg:col-span-2 sticky top-28 z-10">
-          <div className="lg:sticky lg:top-28 space-y-4">
+    <div className="min-h-screen container mx-auto py-5 md:py-8 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-10 gap-6">
+        {/* Filters Sidebar */}
+        <div className="col-span-10 lg:col-span-2 sticky top-24 sm:top-26 z-10">
+          <div className="lg:sticky lg:top-26 space-y-4">
             <h3 className="hidden lg:block">Browse Anime</h3>
             <AnimeFilters
               searchQuery={searchQuery}
@@ -310,98 +405,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Loading State - Only show on initial load */}
-        {isLoading && animes.length === 0 && <AnimeListSkeleton />}
-
-        {/* Error State */}
-        {error && (
-          <AnimeEmptyState
-            type={
-              error.message?.includes("network") ||
-              error.message?.includes("fetch")
-                ? "network-error"
-                : "error"
-            }
-            description={
-              error instanceof Error ? error.message : "An error occurred"
-            }
-            action={{
-              label: "Try Again",
-              onClick: () => {
-                if (infiniteScrollMode) {
-                  infiniteQuery.refetch();
-                } else {
-                  paginationQuery.refetch();
-                }
-              },
-            }}
-            className="col-span-8"
-          />
-        )}
-
-        {/* Anime Grid */}
-        {(!isLoading || animes.length > 0) && !error && (
-          <div className="col-span-10 lg:col-span-8">
-            <div
-              className={
-                viewMode === "grid"
-                  ? " grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
-                  : "col-span-1 md:col-span-8 flex flex-col gap-4"
-              }
-            >
-              {animes.map((anime) => (
-                <AnimeCard
-                  key={anime.mal_id}
-                  anime={anime}
-                  viewMode={viewMode}
-                />
-              ))}
-            </div>
-
-            {/* Infinite Scroll Trigger */}
-            {infiniteScrollMode && hasNextPage && (
-              <div ref={loadMoreRef} className="col-span-8 py-8 text-center">
-                {isFetchingNextPage && (
-                  <p className="text-muted-foreground">Loading more...</p>
-                )}
-              </div>
-            )}
-
-            {/* Pagination */}
-            {!infiniteScrollMode && animes.length > 0 && (
-              <div className="col-span-8 flex justify-center items-center gap-4 mt-8">
-                <Button
-                  variant="outline"
-                  disabled={currentPage === 1}
-                  onClick={() => handlePageChange(currentPage - 1)}
-                >
-                  Previous
-                </Button>
-                <span className="text-muted-foreground">
-                  Page {pagination.currentPage} of {pagination.lastVisiblePage}
-                </span>
-                <Button
-                  variant="outline"
-                  disabled={!pagination.hasNextPage}
-                  onClick={() => handlePageChange(currentPage + 1)}
-                >
-                  Next
-                </Button>
-              </div>
-            )}
-
-            {animes.length === 0 && (
-              <AnimeEmptyState
-                type="no-results"
-                action={{
-                  label: "Clear Filters",
-                  onClick: handleClearFilters,
-                }}
-                className="col-span-8"
-              />
-            )}
-          </div>
-        )}
+        {/* Content area - changes based on state */}
+        <div className="col-span-10 lg:col-span-8">{renderContent()}</div>
       </div>
     </div>
   );

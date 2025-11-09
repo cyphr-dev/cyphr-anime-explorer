@@ -382,13 +382,14 @@ export function AnimeFilters({
     <div className="space-y-4">
       {/* Search Bar - Always visible */}
       <div className="hidden lg:flex flex-col space-y-4">
-        <div className="flex gap-2">
+        <div className="flex gap-2 relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             type="text"
             placeholder="Search anime..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="flex-1"
+            className="flex-1 pl-10"
           />
         </div>
 

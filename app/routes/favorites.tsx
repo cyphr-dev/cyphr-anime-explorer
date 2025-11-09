@@ -1,20 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Route } from "./+types/favorites";
 import { useAppSelector } from "~/store/hooks";
 import { selectFavorites } from "~/store/slices/favoritesSlice";
-import { AnimeCard, AnimeListSkeleton } from "~/components/AnimeCard";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
+import { AnimeCard } from "~/components/AnimeCard";
 import AnimeEmptyState from "~/components/AnimeEmptyState";
-import { Grid3x3, List, Search, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
+import { FavoritesFilters } from "~/components/FavoritesFilters";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -25,11 +17,57 @@ export function meta({}: Route.MetaArgs) {
 
 export default function FavoritesPage() {
   const favorites = useAppSelector(selectFavorites);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  // Load persisted state from localStorage
+  const [searchQuery, setSearchQuery] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("favoritesSearchQuery") || "";
+    }
+    return "";
+  });
+
+  const [viewMode, setViewMode] = useState<"grid" | "list">(() => {
+    if (typeof window !== "undefined") {
+      return (
+        (localStorage.getItem("favoritesViewMode") as "grid" | "list") || "grid"
+      );
+    }
+    return "grid";
+  });
+
   const [sortBy, setSortBy] = useState<"recent" | "title" | "score" | "type">(
-    "recent"
+    () => {
+      if (typeof window !== "undefined") {
+        return (
+          (localStorage.getItem("favoritesSortBy") as
+            | "recent"
+            | "title"
+            | "score"
+            | "type") || "recent"
+        );
+      }
+      return "recent";
+    }
   );
+
+  // Persist state changes to localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("favoritesSearchQuery", searchQuery);
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("favoritesViewMode", viewMode);
+    }
+  }, [viewMode]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("favoritesSortBy", sortBy);
+    }
+  }, [sortBy]);
 
   // Filter favorites based on search query
   const filteredFavorites = favorites.filter((anime) =>
@@ -51,111 +89,95 @@ export default function FavoritesPage() {
     }
   });
 
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("favoritesSearchQuery");
+    }
+  };
+
+  const renderContent = () => {
+    // No favorites at all
+    if (favorites.length === 0) {
+      return (
+        <AnimeEmptyState
+          type="no-results"
+          title="No favorites yet"
+          description="Start adding anime to your favorites by clicking the heart icon on any anime card!"
+          action={{
+            label: "Browse Anime",
+            onClick: () => (window.location.href = "/browse"),
+          }}
+        />
+      );
+    }
+
+    // No results after filtering
+    if (sortedFavorites.length === 0) {
+      return (
+        <AnimeEmptyState
+          type="no-results"
+          title="No results found"
+          description={`No favorites match "${searchQuery}"`}
+          action={{
+            label: "Clear Search",
+            onClick: handleClearSearch,
+          }}
+        />
+      );
+    }
+
+    // Show favorites
+    return (
+      <div
+        className={
+          viewMode === "grid"
+            ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+            : "flex flex-col gap-4"
+        }
+      >
+        {sortedFavorites.map((anime) => (
+          <AnimeCard
+            key={anime.mal_id}
+            anime={anime as any}
+            viewMode={viewMode}
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen container mx-auto md:py-8 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-10 gap-6">
+        {/* Filters Sidebar */}
+        <div className="col-span-10 lg:col-span-2 sticky top-20 sm:top-22 z-10">
+          <div className="lg:sticky lg:top-26 space-y-4">
+            {/* Title with count */}
             <div className="flex items-center gap-3">
-              <Heart className="w-8 h-8 text-red-500 fill-red-500" />
-              <h1>My Favorites</h1>
+              <Heart className="w-6 h-6 text-red-500 fill-red-500 hidden lg:block" />
+              <h3 className="hidden lg:block">My Favorites</h3>
             </div>
-            <Badge variant="secondary">
+
+            <Badge variant="secondary" className="hidden lg:inline-flex">
               {favorites.length} {favorites.length === 1 ? "anime" : "anime"}
             </Badge>
-          </div>
 
-          {/* Controls */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            {/* Search */}
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-              <Input
-                type="text"
-                placeholder="Search your favorites..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-
-            {/* Sort */}
-            <Select
-              value={sortBy}
-              onValueChange={(value: any) => setSortBy(value)}
-            >
-              <SelectTrigger className="w-full sm:w-[180px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="recent">Recently Added</SelectItem>
-                <SelectItem value="title">Title (A-Z)</SelectItem>
-                <SelectItem value="score">Score (High-Low)</SelectItem>
-                <SelectItem value="type">Type</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {/* View Mode Toggle */}
-            <div className="flex gap-2">
-              <Button
-                variant={viewMode === "grid" ? "default" : "outline"}
-                size="icon"
-                onClick={() => setViewMode("grid")}
-                aria-label="Grid view"
-              >
-                <Grid3x3 className="w-4 h-4" />
-              </Button>
-              <Button
-                variant={viewMode === "list" ? "default" : "outline"}
-                size="icon"
-                onClick={() => setViewMode("list")}
-                aria-label="List view"
-              >
-                <List className="w-4 h-4" />
-              </Button>
-            </div>
+            {/* Filters Component */}
+            <FavoritesFilters
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              sortBy={sortBy}
+              onSortByChange={setSortBy}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              onClearSearch={handleClearSearch}
+            />
           </div>
         </div>
 
-        {/* Content */}
-        {favorites.length === 0 ? (
-          <AnimeEmptyState
-            type="no-results"
-            title="No favorites yet"
-            description="Start adding anime to your favorites by clicking the heart icon on any anime card!"
-            action={{
-              label: "Browse Anime",
-              onClick: () => (window.location.href = "/browse"),
-            }}
-          />
-        ) : sortedFavorites.length === 0 ? (
-          <AnimeEmptyState
-            type="no-results"
-            title="No results found"
-            description={`No favorites match "${searchQuery}"`}
-            action={{
-              label: "Clear Search",
-              onClick: () => setSearchQuery(""),
-            }}
-          />
-        ) : (
-          <div
-            className={
-              viewMode === "grid"
-                ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
-                : "space-y-4"
-            }
-          >
-            {sortedFavorites.map((anime) => (
-              <AnimeCard
-                key={anime.mal_id}
-                anime={anime as any}
-                viewMode={viewMode}
-              />
-            ))}
-          </div>
-        )}
+        {/* Content area */}
+        <div className="col-span-10 lg:col-span-8">{renderContent()}</div>
       </div>
     </div>
   );

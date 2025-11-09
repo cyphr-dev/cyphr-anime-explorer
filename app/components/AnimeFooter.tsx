@@ -91,7 +91,7 @@ export default function AnimeFooter() {
                 <span>MyAnimeList</span>
               </a>
               <a
-                href="https://github.com/cyphr-dev/cyphr-animexplorer"
+                href="https://github.com/cyphr-dev/cyphr-anime-explorer"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
