@@ -1,10 +1,22 @@
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
+import type { Route } from "./+types/home";
 import type { Anime } from "~/types/anime";
 import AnimeCategoriesCarousel from "~/components/AnimeCategoriesCarousel";
 import { Button } from "~/components/ui/button";
 import AnimeHero from "~/components/AnimeHero";
 import { fetchAnimeList } from "~/services/jikanApi";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Anime Explorer - Discover Your Next Favorite Anime" },
+    {
+      name: "description",
+      content:
+        "Explore top anime, latest series, and movies. Discover your next favorite anime with Anime Explorer.",
+    },
+  ];
+}
 
 async function fetchTopAnime(): Promise<Anime[]> {
   const response = await fetchAnimeList({

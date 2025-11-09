@@ -10,7 +10,7 @@ import { FavoritesFilters } from "~/components/FavoritesFilters";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "My Favorites - Cyphr Anime Explorer" },
+    { title: "My Favorites - Anime Explorer" },
     { name: "description", content: "View your favorite anime" },
   ];
 }

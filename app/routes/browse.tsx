@@ -12,8 +12,12 @@ import AnimeEmptyState from "~/components/AnimeEmptyState";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Cyphr Anime Explorer" },
-    { name: "description", content: "Discover your next favorite anime" },
+    { title: "Browse Anime - Anime Explorer" },
+    {
+      name: "description",
+      content:
+        "Browse and search thousands of anime. Filter by type, status, rating, and more.",
+    },
   ];
 }
 

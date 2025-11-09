@@ -11,11 +11,42 @@ import { AnimeMediaTab } from "~/components/tabs/AnimeMediaTab";
 import { AnimeStatisticsTab } from "~/components/tabs/AnimeStatisticsTab";
 import { AnimeRelatedTab } from "~/components/tabs/AnimeRelatedTab";
 import { AnimeDetailsSkeleton } from "~/components/AnimeDetailsSkeleton";
+import { fetchAnimeById } from "~/services/jikanApi";
 
-export function meta({ params }: Route.MetaArgs) {
+export async function loader({ params }: Route.LoaderArgs) {
+  const animeId = params.id ? Number(params.id) : undefined;
+  if (!animeId) {
+    throw new Response("Not Found", { status: 404 });
+  }
+
+  try {
+    const response = await fetchAnimeById(animeId);
+    return { anime: response.data };
+  } catch (error) {
+    // Return null if anime not found, component will handle it
+    return { anime: null };
+  }
+}
+
+export function meta({ data }: Route.MetaArgs) {
+  if (!data?.anime) {
+    return [
+      { title: "Anime Not Found - Anime Explorer" },
+      {
+        name: "description",
+        content: "The anime you're looking for could not be found.",
+      },
+    ];
+  }
+
+  const anime = data.anime;
   return [
-    { title: `Anime Details - Cyphr Anime Explorer` },
-    { name: "description", content: "View detailed anime information" },
+    { title: `${anime.title} - Anime Explorer` },
+    {
+      name: "description",
+      content:
+        anime.synopsis || `View detailed information about ${anime.title}`,
+    },
   ];
 }
 
