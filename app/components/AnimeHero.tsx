@@ -8,7 +8,7 @@ export default function AnimeHero() {
       <div className="p-4 container mx-auto flex flex-col gap-8 z-20 relative">
         <div className="flex flex-col gap-2">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent ">
-            AnimeXplorer
+            AnimeExplorer
           </h1>
           <p className="text-white text-sm md:text-lg max-w-lg">
             Discover and explore the world of anime. Uses{" "}

@@ -13,7 +13,7 @@ export default function AnimeFooter() {
                 to="/"
                 className="hover:opacity-80 transition-opacity bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
               >
-                <h3>AnimeXplorer</h3>
+                <h3>AnimeExplorer</h3>
               </Link>
             </div>
           </div>
