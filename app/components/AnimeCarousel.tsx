@@ -11,9 +11,14 @@ import {
 interface AnimeCarouselProps {
   anime: Anime[];
   isLoading?: boolean;
+  largerCards?: boolean;
 }
 
-export function AnimeCarousel({ anime, isLoading }: AnimeCarouselProps) {
+export function AnimeCarousel({
+  anime,
+  isLoading,
+  largerCards = false,
+}: AnimeCarouselProps) {
   if (isLoading) {
     return (
       <div className="relative">
@@ -48,7 +53,11 @@ export function AnimeCarousel({ anime, isLoading }: AnimeCarouselProps) {
         {anime.map((item) => (
           <CarouselItem
             key={item.mal_id}
-            className="basis-1/2 sm:basis-1/4 md:basis-1/5 lg:basis-1/6"
+            className={`pl-2 md:pl-4 ${
+              largerCards
+                ? "basis-1/3 sm:basis-1/4 md:basis-1/4 lg:basis-1/5"
+                : "basis-1/3 sm:basis-1/5 md:basis-1/5 lg:basis-1/6"
+            }`}
           >
             <AnimeCard anime={item} />
           </CarouselItem>

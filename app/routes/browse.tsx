@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { useSearchParams } from "react-router";
 import type { Route } from "./+types/home";
 import type { InfiniteData } from "@tanstack/react-query";
 import { useDebounce } from "~/hooks/useDebounce";
@@ -17,16 +18,41 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  // Load persisted state from localStorage
+  const [searchParams] = useSearchParams();
+
+  // Load persisted state from localStorage OR URL params
   const [searchQuery, setSearchQuery] = useState(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("animeSearchQuery") || "";
+      return (
+        searchParams.get("query") ||
+        localStorage.getItem("animeSearchQuery") ||
+        ""
+      );
     }
     return "";
   });
 
   const [filters, setFilters] = useState(() => {
     if (typeof window !== "undefined") {
+      // Check URL params first, then localStorage
+      const urlType = searchParams.get("type");
+      const urlStatus = searchParams.get("status");
+      const urlRating = searchParams.get("rating");
+      const urlOrderBy = searchParams.get("order_by");
+      const urlSort = searchParams.get("sort");
+
+      // If any URL params exist, use them
+      if (urlType || urlStatus || urlRating || urlOrderBy || urlSort) {
+        return {
+          type: urlType || "",
+          status: urlStatus || "",
+          rating: urlRating || "",
+          orderBy: urlOrderBy || "",
+          sort: urlSort || "",
+        };
+      }
+
+      // Otherwise fall back to localStorage
       const stored = localStorage.getItem("animeFilters");
       return stored
         ? JSON.parse(stored)

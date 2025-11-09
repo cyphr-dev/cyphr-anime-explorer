@@ -134,13 +134,13 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
           </button>
         </div>
         <CardContent className="p-4">
-          <CardTitle className="line-clamp-1">{anime.title}</CardTitle>
+          <CardTitle className="line-clamp-1">
+            <h5>{anime.title}</h5>
+          </CardTitle>
           <CardDescription className="mt-2">
             <div className="flex flex-wrap gap-1 mt-1">
               {anime.type && <Badge variant="secondary">{anime.type}</Badge>}
-              {anime.episodes && (
-                <Badge variant="outline">{anime.episodes} eps</Badge>
-              )}
+              {anime.episodes && <Badge>{anime.episodes} eps</Badge>}
             </div>
           </CardDescription>
         </CardContent>

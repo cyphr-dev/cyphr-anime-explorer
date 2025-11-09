@@ -33,6 +33,7 @@ const rateLimitedRequest = async <T>(
 
 export interface FetchAnimeListParams {
   page?: number;
+  limit?: number;
   query?: string;
   type?: string;
   status?: string;
@@ -51,6 +52,7 @@ export const fetchAnimeList = async (
   return rateLimitedRequest(async () => {
     const {
       page = 1,
+      limit = 25,
       query,
       type,
       status,
@@ -64,7 +66,7 @@ export const fetchAnimeList = async (
 
     const queryParams: Record<string, string | number | boolean> = {
       page,
-      limit: 25,
+      limit,
     };
 
     if (query) queryParams.q = query;

@@ -70,7 +70,7 @@
   /* Typography System */
   --text-h1-size: 50px;
   --text-h1-weight: 700;
-  --text-h1-line-height: auto;
+  --text-h1-line-height: 52px;
 
   --text-h2-size: 28px;
   --text-h2-weight: 700;
