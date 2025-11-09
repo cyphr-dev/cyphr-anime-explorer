@@ -3,6 +3,19 @@ import { Card, CardContent } from "~/components/ui/card";
 import { Heart, Star, TrendingUp, Users } from "lucide-react";
 
 export function AnimeStatsGrid({ anime }: { anime: Anime }) {
+  // Safety check for anime data
+  if (!anime) {
+    return (
+      <Card>
+        <CardContent className="p-6">
+          <div className="text-center py-4 text-muted-foreground">
+            <p>Unable to load stats</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardContent className="p-6">
@@ -24,11 +37,13 @@ export function AnimeStatsGrid({ anime }: { anime: Anime }) {
           )}
 
           {/* Popularity */}
-          <div className="flex flex-col items-center justify-center text-center">
-            <Users className="w-6 h-6 text-primary mb-2" />
-            <h4>#{anime.popularity}</h4>
-            <p className="text-muted-foreground">Popularity</p>
-          </div>
+          {anime.popularity && (
+            <div className="flex flex-col items-center justify-center text-center">
+              <Users className="w-6 h-6 text-primary mb-2" />
+              <h4>#{anime.popularity}</h4>
+              <p className="text-muted-foreground">Popularity</p>
+            </div>
+          )}
 
           {/* Favorites */}
           {anime.favorites && (

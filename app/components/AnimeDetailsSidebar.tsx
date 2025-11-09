@@ -1,18 +1,58 @@
-import { Calendar, Film, Clock, PlayCircle, AlertCircle } from "lucide-react";
+import {
+  Calendar,
+  Film,
+  Clock,
+  PlayCircle,
+  AlertCircle,
+  Heart,
+} from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import type { Anime } from "~/types/anime";
+import { useAppDispatch, useAppSelector } from "~/store/hooks";
+import {
+  toggleFavorite,
+  selectIsFavorite,
+} from "~/store/slices/favoritesSlice";
 
 interface AnimeDetailsSidebarProps {
   anime: Anime;
 }
 
 export function AnimeDetailsSidebar({ anime }: AnimeDetailsSidebarProps) {
+  const dispatch = useAppDispatch();
+  const isFavorite = useAppSelector((state) =>
+    selectIsFavorite(state, anime.mal_id)
+  );
+
+  const handleFavoriteClick = () => {
+    dispatch(
+      toggleFavorite({
+        mal_id: anime.mal_id,
+        title: anime.title,
+        images: anime.images,
+        score: anime.score,
+        year: anime.year,
+        type: anime.type,
+        episodes: anime.episodes,
+      })
+    );
+  };
+
+  // Safety check for anime data
+  if (!anime) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        <p>Unable to load anime information</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {/* Titles */}
       <div>
-        <h3 className="mb-2">{anime.title}</h3>
+        <h3 className="mb-2">{anime.title || "Unknown Title"}</h3>
         {anime.title_english && anime.title_english !== anime.title && (
           <p className="text-muted-foreground mb-1">{anime.title_english}</p>
         )}
@@ -22,25 +62,39 @@ export function AnimeDetailsSidebar({ anime }: AnimeDetailsSidebarProps) {
       </div>
 
       {/* Anime Image */}
-      <img
-        src={anime.images.jpg.large_image_url}
-        alt={anime.title}
-        className="w-full rounded-lg shadow-lg"
-      />
+      {anime.images?.jpg?.large_image_url && (
+        <img
+          src={anime.images.jpg.large_image_url}
+          alt={anime.title}
+          className="w-full rounded-lg shadow-lg"
+        />
+      )}
 
       <hr />
 
-      {/* MyAnimeList Button */}
-      <a
-        href={anime.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
+      {/* Favorite Button */}
+      <Button
+        onClick={handleFavoriteClick}
+        variant={isFavorite ? "default" : "outline"}
+        className="w-full"
       >
-        <Button className="w-full">
-          <p>MyAnimeList</p>
-        </Button>
-      </a>
+        <Heart className={`w-4 h-4 mr-2 ${isFavorite ? "fill-current" : ""}`} />
+        <p>{isFavorite ? "Remove from Favorites" : "Add to Favorites"}</p>
+      </Button>
+
+      {/* MyAnimeList Button */}
+      {anime.url && (
+        <a
+          href={anime.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block"
+        >
+          <Button className="w-full" variant="secondary">
+            <p>MyAnimeList</p>
+          </Button>
+        </a>
+      )}
 
       <hr />
 

@@ -8,7 +8,12 @@ import {
 } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import type { Anime } from "~/types/anime";
-import { Star } from "lucide-react";
+import { Star, Heart } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "~/store/hooks";
+import {
+  toggleFavorite,
+  selectIsFavorite,
+} from "~/store/slices/favoritesSlice";
 
 interface AnimeCardProps {
   anime: Anime;
@@ -16,11 +21,31 @@ interface AnimeCardProps {
 }
 
 export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
+  const dispatch = useAppDispatch();
+  const isFavorite = useAppSelector((state) =>
+    selectIsFavorite(state, anime.mal_id)
+  );
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(
+      toggleFavorite({
+        mal_id: anime.mal_id,
+        title: anime.title,
+        images: anime.images,
+        score: anime.score,
+        year: anime.year,
+        type: anime.type,
+        episodes: anime.episodes,
+      })
+    );
+  };
   if (viewMode === "list") {
     return (
       <Link to={`/anime/${anime.mal_id}`} className="group">
         <Card className="overflow-hidden transition-all hover:shadow-lg">
-          <div className="flex flex-col sm:flex-row">
+          <div className="flex flex-col sm:flex-row h-56">
             <div className="w-full sm:w-48 h-64 sm:h-auto relative overflow-hidden shrink-0">
               <img
                 src={anime.images.jpg.large_image_url}
@@ -28,13 +53,20 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
-              {anime.score && (
-                <div className="absolute top-2 right-2">
-                  <Badge className="bg-yellow-500 text-black">
-                    ⭐ {anime.score}
-                  </Badge>
-                </div>
-              )}
+
+              <button
+                onClick={handleFavoriteClick}
+                className="absolute top-2 left-2 bg-white/90 hover:bg-white rounded-full p-2 transition-all"
+                aria-label={
+                  isFavorite ? "Remove from favorites" : "Add to favorites"
+                }
+              >
+                <Heart
+                  className={`w-5 h-5 ${
+                    isFavorite ? "fill-red-500 text-red-500" : "text-gray-600"
+                  }`}
+                />
+              </button>
             </div>
             <div className="flex-1 p-4 sm:p-6">
               <CardTitle className="mb-2 group-hover:text-purple-600 transition-colors">
@@ -87,13 +119,19 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
             className="w-full h-full object-cover"
             loading="lazy"
           />
-          {anime.score && (
-            <div className="absolute top-2 right-2">
-              <Badge className="bg-yellow-500 text-black">
-                ⭐ {anime.score}
-              </Badge>
-            </div>
-          )}
+          <button
+            onClick={handleFavoriteClick}
+            className="cursor-pointer absolute top-2 right-2 bg-white/90 hover:bg-white rounded-full p-2 transition-all"
+            aria-label={
+              isFavorite ? "Remove from favorites" : "Add to favorites"
+            }
+          >
+            <Heart
+              className={`w-5 h-5 ${
+                isFavorite ? "fill-red-500 text-red-500" : "text-gray-600"
+              }`}
+            />
+          </button>
         </div>
         <CardContent className="p-4">
           <CardTitle className="line-clamp-1">{anime.title}</CardTitle>

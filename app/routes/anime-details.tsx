@@ -10,6 +10,7 @@ import { AnimeInfoTab } from "~/components/tabs/AnimeInfoTab";
 import { AnimeMediaTab } from "~/components/tabs/AnimeMediaTab";
 import { AnimeStatisticsTab } from "~/components/tabs/AnimeStatisticsTab";
 import { AnimeRelatedTab } from "~/components/tabs/AnimeRelatedTab";
+import { AnimeDetailsSkeleton } from "~/components/AnimeDetailsSkeleton";
 
 export function meta({ params }: Route.MetaArgs) {
   return [
@@ -28,12 +29,7 @@ export default function AnimeDetails() {
 
   const renderContent = () => {
     if (isLoading) {
-      return (
-        <div className="text-center">
-          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />
-          <p className="mt-4 text-muted-foreground">Loading anime details...</p>
-        </div>
-      );
+      return <AnimeDetailsSkeleton />;
     }
     if (error) {
       return (
@@ -81,7 +77,7 @@ export default function AnimeDetails() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left Column - Sidebar */}
             <div className="lg:col-span-2">
-              <div className="sticky md:top-26">
+              <div className="">
                 <AnimeDetailsSidebar anime={currentAnime} />
               </div>
             </div>
@@ -147,7 +143,7 @@ export default function AnimeDetails() {
 
             {/* Right Column - Stats Grid */}
             <div className="lg:col-span-2">
-              <div className="sticky top-20">
+              <div className="sticky top-26">
                 <AnimeStatsGrid anime={currentAnime} />
               </div>
             </div>
