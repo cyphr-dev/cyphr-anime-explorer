@@ -285,11 +285,12 @@ export default function Home() {
   }, [infiniteScrollMode, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="min-h-screen container mx-auto">
-      <div className="container mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-10 gap-8">
+    <div className="min-h-screen container mx-auto py-8 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-10 gap-8">
         {/* Search and Filters */}
-        <div className="col-span-2">
-          <div className="sticky top-20">
+        <div className="col-span-10 lg:col-span-2 sticky top-28 z-10">
+          <div className="lg:sticky lg:top-28 space-y-4">
+            <h3 className="hidden lg:block">Browse Anime</h3>
             <AnimeFilters
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
@@ -340,11 +341,11 @@ export default function Home() {
 
         {/* Anime Grid */}
         {(!isLoading || animes.length > 0) && !error && (
-          <>
+          <div className="col-span-10 lg:col-span-8">
             <div
               className={
                 viewMode === "grid"
-                  ? "col-span-1 md:col-span-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                  ? " grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
                   : "col-span-1 md:col-span-8 flex flex-col gap-4"
               }
             >
@@ -399,7 +400,7 @@ export default function Home() {
                 className="col-span-8"
               />
             )}
-          </>
+          </div>
         )}
       </div>
     </div>
