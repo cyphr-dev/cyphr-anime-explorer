@@ -350,7 +350,7 @@ export default function Home() {
                 >
                   Previous
                 </Button>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-muted-foreground">
                   Page {pagination.currentPage} of {pagination.lastVisiblePage}
                 </span>
                 <Button

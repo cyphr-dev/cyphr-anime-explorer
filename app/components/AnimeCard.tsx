@@ -30,18 +30,18 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
               />
               {anime.score && (
                 <div className="absolute top-2 right-2">
-                  <Badge className="bg-yellow-500 text-black font-bold">
+                  <Badge className="bg-yellow-500 text-black">
                     ⭐ {anime.score}
                   </Badge>
                 </div>
               )}
             </div>
             <div className="flex-1 p-4 sm:p-6">
-              <CardTitle className="text-xl mb-2 group-hover:text-purple-600 transition-colors">
+              <CardTitle className="mb-2 group-hover:text-purple-600 transition-colors">
                 {anime.title}
               </CardTitle>
               {anime.synopsis && (
-                <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
+                <p className="text-muted-foreground line-clamp-3 mb-4">
                   {anime.synopsis}
                 </p>
               )}
@@ -54,13 +54,11 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
                   <Badge variant="outline">{anime.status}</Badge>
                 )}
               </div>
-              <div className="flex items-center gap-4 text-sm">
+              <div className="flex items-center gap-4">
                 {anime.score && (
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-semibold">
-                      {anime.score.toFixed(1)}
-                    </span>
+                    <span>{anime.score.toFixed(1)}</span>
                   </div>
                 )}
                 {anime.year && (
@@ -91,25 +89,19 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
           />
           {anime.score && (
             <div className="absolute top-2 right-2">
-              <Badge className="bg-yellow-500 text-black font-bold">
+              <Badge className="bg-yellow-500 text-black">
                 ⭐ {anime.score}
               </Badge>
             </div>
           )}
         </div>
         <CardContent className="p-4">
-          <CardTitle className="text-sm line-clamp-1">{anime.title}</CardTitle>
-          <CardDescription className="mt-2 text-xs">
+          <CardTitle className="line-clamp-1">{anime.title}</CardTitle>
+          <CardDescription className="mt-2">
             <div className="flex flex-wrap gap-1 mt-1">
-              {anime.type && (
-                <Badge variant="secondary" className="text-xs">
-                  {anime.type}
-                </Badge>
-              )}
+              {anime.type && <Badge variant="secondary">{anime.type}</Badge>}
               {anime.episodes && (
-                <Badge variant="outline" className="text-xs">
-                  {anime.episodes} eps
-                </Badge>
+                <Badge variant="outline">{anime.episodes} eps</Badge>
               )}
             </div>
           </CardDescription>
@@ -118,12 +110,10 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
           {anime.score && (
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <p className="font-semibold text-sm">{anime.score.toFixed(1)}</p>
+              <p>{anime.score.toFixed(1)}</p>
             </div>
           )}
-          {anime.year && (
-            <p className="text-xs text-muted-foreground">{anime.year}</p>
-          )}
+          {anime.year && <p className="text-muted-foreground">{anime.year}</p>}
         </CardFooter>
       </Card>
     </Link>

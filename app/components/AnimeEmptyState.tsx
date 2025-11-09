@@ -81,9 +81,7 @@ export default function AnimeEmptyState({
     <Card className={className}>
       <CardContent className="flex flex-col items-center justify-center py-16 text-center">
         <div className="mb-4">{icon || content.icon}</div>
-        <h3 className="text-xl font-semibold mb-2">
-          {title || content.defaultTitle}
-        </h3>
+        <h3 className="mb-2">{title || content.defaultTitle}</h3>
         <p className="text-muted-foreground mb-6 max-w-md">
           {description || content.defaultDescription}
         </p>

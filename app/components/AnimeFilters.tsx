@@ -126,7 +126,7 @@ export function AnimeFilters({
 
       {/* Infinite Scroll Toggle */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium">Scroll Mode</label>
+        <label>Scroll Mode</label>
         <ToggleGroup
           type="single"
           value={infiniteScrollMode ? "infinite" : "pagination"}
@@ -193,7 +193,7 @@ export function AnimeFilters({
             </div>
             <div className="max-h-[200px] overflow-auto">
               {filteredGenres.length === 0 ? (
-                <div className="py-6 text-center text-sm text-muted-foreground">
+                <div className="py-6 text-center text-muted-foreground">
                   No genres found
                 </div>
               ) : (
