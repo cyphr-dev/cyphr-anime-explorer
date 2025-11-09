@@ -14,6 +14,7 @@ import {
   toggleFavorite,
   selectIsFavorite,
 } from "~/store/slices/favoritesSlice";
+import { showFavoriteToast } from "~/lib/toast";
 
 interface AnimeCardProps {
   anime: Anime;
@@ -29,6 +30,9 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const action = isFavorite ? "removed" : "added";
+
     dispatch(
       toggleFavorite({
         mal_id: anime.mal_id,
@@ -40,6 +44,8 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
         episodes: anime.episodes,
       })
     );
+
+    showFavoriteToast(action, anime.title);
   };
   if (viewMode === "list") {
     return (

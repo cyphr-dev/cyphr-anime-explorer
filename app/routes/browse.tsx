@@ -344,7 +344,7 @@ export default function Home() {
             <div
               className={
                 viewMode === "grid"
-                  ? "col-span-1 md:col-span-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+                  ? "col-span-1 md:col-span-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
                   : "col-span-1 md:col-span-8 flex flex-col gap-4"
               }
             >

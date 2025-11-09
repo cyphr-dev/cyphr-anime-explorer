@@ -14,6 +14,7 @@ import {
   toggleFavorite,
   selectIsFavorite,
 } from "~/store/slices/favoritesSlice";
+import { showFavoriteToast } from "~/lib/toast";
 
 interface AnimeDetailsSidebarProps {
   anime: Anime;
@@ -26,6 +27,8 @@ export function AnimeDetailsSidebar({ anime }: AnimeDetailsSidebarProps) {
   );
 
   const handleFavoriteClick = () => {
+    const action = isFavorite ? "removed" : "added";
+
     dispatch(
       toggleFavorite({
         mal_id: anime.mal_id,
@@ -37,6 +40,8 @@ export function AnimeDetailsSidebar({ anime }: AnimeDetailsSidebarProps) {
         episodes: anime.episodes,
       })
     );
+
+    showFavoriteToast(action, anime.title);
   };
 
   // Safety check for anime data

@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { store } from "./store/store";
 import AnimeHeader from "./components/AnimeHeader";
+import { Toaster } from "./components/ui/sonner";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -66,6 +67,7 @@ export default function App() {
         <AnimeHeader />
         <Outlet />
         <AnimeFooter />
+        <Toaster />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </Provider>
