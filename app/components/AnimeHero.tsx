@@ -35,7 +35,7 @@ export default function AnimeHero() {
         width={1000}
         height={500}
         className="object-cover absolute z-0 -right-50 -top-20 filter max-h-[900px]"
-        alt="anime mascot lol"
+        alt="Decorative anime character illustration in hero section"
       />
       {/* Gradient overlay for fade effect */}
       <div className="absolute inset-0 bg-linear-to-r from-[#621371] via-[#621371] to-transparent z-5" />

@@ -383,13 +383,18 @@ export function AnimeFilters({
       {/* Search Bar - Always visible */}
       <div className="hidden lg:flex flex-col space-y-4">
         <div className="flex gap-2 relative">
+          <label htmlFor="anime-search-desktop" className="sr-only">
+            Search anime by title
+          </label>
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
+            id="anime-search-desktop"
             type="text"
             placeholder="Search anime..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="flex-1 pl-10"
+            aria-label="Search anime by title"
           />
         </div>
 
@@ -403,12 +408,21 @@ export function AnimeFilters({
             if (value) onViewModeChange(value as "grid" | "list");
           }}
           className="w-full"
+          aria-label="View mode selection"
         >
-          <ToggleGroupItem value="grid" className="flex-1">
+          <ToggleGroupItem
+            value="grid"
+            className="flex-1"
+            aria-label="Grid view"
+          >
             <Grid3x3 className="w-4 h-4 mr-2" />
             <p>Grid</p>
           </ToggleGroupItem>
-          <ToggleGroupItem value="list" className="flex-1">
+          <ToggleGroupItem
+            value="list"
+            className="flex-1"
+            aria-label="List view"
+          >
             <List className="w-4 h-4 mr-2" />
             <p>List</p>
           </ToggleGroupItem>
@@ -420,6 +434,10 @@ export function AnimeFilters({
           size="sm"
           onClick={() => onSfwModeChange(!sfwMode)}
           className="w-full"
+          aria-label={
+            sfwMode ? "Disable safe for work mode" : "Enable safe for work mode"
+          }
+          aria-pressed={sfwMode}
         >
           {sfwMode ? (
             <>
@@ -443,6 +461,12 @@ export function AnimeFilters({
           size="sm"
           onClick={() => onInfiniteScrollModeChange(!infiniteScrollMode)}
           className="w-full"
+          aria-label={
+            infiniteScrollMode
+              ? "Switch to pagination mode"
+              : "Switch to infinite scroll mode"
+          }
+          aria-pressed={infiniteScrollMode}
         >
           {infiniteScrollMode ? (
             <>
@@ -477,11 +501,16 @@ export function AnimeFilters({
         <CardContent className="p-2 flex flex-col gap-2">
           {/* Search Bar - Always visible */}
           <div className="flex gap-2">
+            <label htmlFor="anime-search-mobile" className="sr-only">
+              Search anime by title
+            </label>
             <Input
+              id="anime-search-mobile"
               type="text"
               placeholder="Search anime..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
+              aria-label="Search anime by title"
             />
             {/* View Mode Toggle - Always visible */}
             <ToggleGroup
@@ -491,11 +520,20 @@ export function AnimeFilters({
                 if (value) onViewModeChange(value as "grid" | "list");
               }}
               className="w-fit"
+              aria-label="View mode selection"
             >
-              <ToggleGroupItem value="grid" className="flex-1">
+              <ToggleGroupItem
+                value="grid"
+                className="flex-1"
+                aria-label="Grid view"
+              >
                 <Grid3x3 className="w-4 h-4" />
               </ToggleGroupItem>
-              <ToggleGroupItem value="list" className="flex-1">
+              <ToggleGroupItem
+                value="list"
+                className="flex-1"
+                aria-label="List view"
+              >
                 <List className="w-4 h-4" />
               </ToggleGroupItem>
             </ToggleGroup>
@@ -503,6 +541,12 @@ export function AnimeFilters({
             <Button
               variant={sfwMode ? "default" : "outline"}
               onClick={() => onSfwModeChange(!sfwMode)}
+              aria-label={
+                sfwMode
+                  ? "Disable safe for work mode"
+                  : "Enable safe for work mode"
+              }
+              aria-pressed={sfwMode}
             >
               {sfwMode ? (
                 <ShieldCheck className="w-4 h-4" />

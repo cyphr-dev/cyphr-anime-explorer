@@ -36,19 +36,24 @@ export function FavoritesFilters({
       <div className="hidden lg:flex flex-col space-y-4">
         {/* Search Bar */}
         <div className="relative">
+          <label htmlFor="favorites-search-desktop" className="sr-only">
+            Search your favorite anime
+          </label>
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
+            id="favorites-search-desktop"
             type="text"
             placeholder="Search favorites..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-10"
+            aria-label="Search your favorite anime"
           />
         </div>
 
         {/* Sort By */}
         <Select value={sortBy} onValueChange={onSortByChange}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Sort favorites by">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
@@ -75,12 +80,21 @@ export function FavoritesFilters({
             if (value) onViewModeChange(value as "grid" | "list");
           }}
           className="w-full"
+          aria-label="View mode selection"
         >
-          <ToggleGroupItem value="grid" className="flex-1">
+          <ToggleGroupItem
+            value="grid"
+            className="flex-1"
+            aria-label="Grid view"
+          >
             <Grid3x3 className="w-4 h-4 mr-2" />
             <p>Grid</p>
           </ToggleGroupItem>
-          <ToggleGroupItem value="list" className="flex-1">
+          <ToggleGroupItem
+            value="list"
+            className="flex-1"
+            aria-label="List view"
+          >
             <List className="w-4 h-4 mr-2" />
             <p>List</p>
           </ToggleGroupItem>
@@ -88,7 +102,12 @@ export function FavoritesFilters({
 
         {/* Clear Search Button */}
         {searchQuery && (
-          <Button variant="outline" onClick={onClearSearch} className="w-full">
+          <Button
+            variant="outline"
+            onClick={onClearSearch}
+            className="w-full"
+            aria-label="Clear search query"
+          >
             <X className="w-4 h-4 mr-2" />
             <p>Clear Search</p>
           </Button>
@@ -101,13 +120,18 @@ export function FavoritesFilters({
           {/* Search Bar and View Mode Toggle */}
           <div className="flex gap-2">
             <div className="relative flex-1">
+              <label htmlFor="favorites-search-mobile" className="sr-only">
+                Search your favorite anime
+              </label>
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
+                id="favorites-search-mobile"
                 type="text"
                 placeholder="Search favorites..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 className="pl-10"
+                aria-label="Search your favorite anime"
               />
             </div>
 
@@ -119,11 +143,12 @@ export function FavoritesFilters({
                 if (value) onViewModeChange(value as "grid" | "list");
               }}
               className="w-fit"
+              aria-label="View mode selection"
             >
-              <ToggleGroupItem value="grid">
+              <ToggleGroupItem value="grid" aria-label="Grid view">
                 <Grid3x3 className="w-4 h-4" />
               </ToggleGroupItem>
-              <ToggleGroupItem value="list">
+              <ToggleGroupItem value="list" aria-label="List view">
                 <List className="w-4 h-4" />
               </ToggleGroupItem>
             </ToggleGroup>
@@ -134,7 +159,7 @@ export function FavoritesFilters({
           {/* Sort By */}
           <div className="flex gap-2">
             <Select value={sortBy} onValueChange={onSortByChange}>
-              <SelectTrigger className="flex-1">
+              <SelectTrigger className="flex-1" aria-label="Sort favorites by">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -155,7 +180,11 @@ export function FavoritesFilters({
 
             {/* Clear Search Button */}
             {searchQuery && (
-              <Button variant="outline" onClick={onClearSearch}>
+              <Button
+                variant="outline"
+                onClick={onClearSearch}
+                aria-label="Clear search query"
+              >
                 <X className="w-4 h-4" />
               </Button>
             )}

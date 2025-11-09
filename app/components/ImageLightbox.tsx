@@ -52,6 +52,9 @@ export function ImageLightbox({
     <div
       className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center h-screen"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image lightbox"
     >
       {/* Close Button */}
       <Button
@@ -59,12 +62,16 @@ export function ImageLightbox({
         size="icon"
         className="absolute top-4 right-4 z-50 text-white hover:bg-white/20"
         onClick={onClose}
+        aria-label="Close lightbox"
       >
         <X className="h-6 w-6" />
       </Button>
 
       {/* Image Counter */}
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/60 px-4 py-2 rounded-full text-white">
+      <div
+        className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/60 px-4 py-2 rounded-full text-white"
+        aria-live="polite"
+      >
         {currentIndex + 1} / {images.length}
       </div>
 
@@ -78,6 +85,7 @@ export function ImageLightbox({
             e.stopPropagation();
             onPrevious();
           }}
+          aria-label="Previous image"
         >
           <ChevronLeft className="h-8 w-8" />
         </Button>
@@ -93,6 +101,7 @@ export function ImageLightbox({
             e.stopPropagation();
             onNext();
           }}
+          aria-label="Next image"
         >
           <ChevronRight className="h-8 w-8" />
         </Button>
