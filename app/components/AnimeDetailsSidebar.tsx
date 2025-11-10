@@ -15,6 +15,7 @@ import {
   selectIsFavorite,
 } from "~/store/slices/favoritesSlice";
 import { showFavoriteToast } from "~/lib/toast";
+import { AnimeStatsGrid } from "./AnimeStatsGrid";
 
 interface AnimeDetailsSidebarProps {
   anime: Anime;
@@ -47,7 +48,7 @@ export function AnimeDetailsSidebar({ anime }: AnimeDetailsSidebarProps) {
   // Safety check for anime data
   if (!anime) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
+      <div className="py-8 text-center text-muted-foreground">
         <p>Unable to load anime information</p>
       </div>
     );
@@ -59,7 +60,7 @@ export function AnimeDetailsSidebar({ anime }: AnimeDetailsSidebarProps) {
       <div>
         <h3 className="mb-2">{anime.title || "Unknown Title"}</h3>
         {anime.title_english && anime.title_english !== anime.title && (
-          <p className="text-muted-foreground mb-1">{anime.title_english}</p>
+          <p className="mb-1 text-muted-foreground">{anime.title_english}</p>
         )}
         {anime.title_japanese && (
           <p className="text-muted-foreground">{anime.title_japanese}</p>
@@ -74,6 +75,13 @@ export function AnimeDetailsSidebar({ anime }: AnimeDetailsSidebarProps) {
           className="w-full rounded-lg shadow-lg"
         />
       )}
+
+      {/* Stats Grid */}
+
+      <div className="block lg:hidden">
+        <hr />
+        <AnimeStatsGrid anime={anime} />
+      </div>
 
       <hr />
 

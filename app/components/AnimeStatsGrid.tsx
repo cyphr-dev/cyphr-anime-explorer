@@ -8,7 +8,7 @@ export function AnimeStatsGrid({ anime }: { anime: Anime }) {
     return (
       <Card>
         <CardContent className="p-6">
-          <div className="text-center py-4 text-muted-foreground">
+          <div className="py-4 text-center text-muted-foreground">
             <p>Unable to load stats</p>
           </div>
         </CardContent>
@@ -19,10 +19,10 @@ export function AnimeStatsGrid({ anime }: { anime: Anime }) {
   return (
     <Card>
       <CardContent className="p-6">
-        <div className="grid grid-cols-4 md:grid-cols-1 gap-6">
+        <div className="grid grid-cols-4 gap-6 lg:grid-cols-1">
           {/* Score */}
           <div className="flex flex-col items-center justify-center text-center">
-            <Star className="w-6 h-6 fill-yellow-400 text-yellow-400 mb-2" />
+            <Star className="w-6 h-6 mb-2 text-yellow-400 fill-yellow-400" />
             <h4>{anime.score ? anime.score.toFixed(1) : "N/A"}</h4>
             <p className="text-muted-foreground">Score</p>
           </div>
@@ -30,7 +30,7 @@ export function AnimeStatsGrid({ anime }: { anime: Anime }) {
           {/* Rank */}
           {anime.rank && (
             <div className="flex flex-col items-center justify-center text-center">
-              <TrendingUp className="w-6 h-6 text-primary mb-2" />
+              <TrendingUp className="w-6 h-6 mb-2 text-primary" />
               <h4>#{anime.rank}</h4>
               <p className="text-muted-foreground">Ranked</p>
             </div>
@@ -39,7 +39,7 @@ export function AnimeStatsGrid({ anime }: { anime: Anime }) {
           {/* Popularity */}
           {anime.popularity && (
             <div className="flex flex-col items-center justify-center text-center">
-              <Users className="w-6 h-6 text-primary mb-2" />
+              <Users className="w-6 h-6 mb-2 text-primary" />
               <h4>#{anime.popularity}</h4>
               <p className="text-muted-foreground">Popularity</p>
             </div>
@@ -48,7 +48,7 @@ export function AnimeStatsGrid({ anime }: { anime: Anime }) {
           {/* Favorites */}
           {anime.favorites && (
             <div className="flex flex-col items-center justify-center text-center">
-              <Heart className="w-6 h-6 text-red-500 mb-2" />
+              <Heart className="w-6 h-6 mb-2 text-red-500" />
               <h4>{anime.favorites.toLocaleString()}</h4>
               <p className="text-muted-foreground">Favorites</p>
             </div>

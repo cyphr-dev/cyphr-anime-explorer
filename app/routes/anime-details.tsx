@@ -64,7 +64,7 @@ export default function AnimeDetails() {
     }
     if (error) {
       return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container px-4 py-8 mx-auto">
           <AnimeEmptyState
             type={
               error.message?.includes("network") ||
@@ -90,7 +90,7 @@ export default function AnimeDetails() {
     }
     if (!currentAnime) {
       return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container px-4 py-8 mx-auto">
           <AnimeEmptyState
             type="no-results"
             title="Anime not found"
@@ -104,8 +104,8 @@ export default function AnimeDetails() {
       );
     } else {
       return (
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="container px-4 py-8 mx-auto">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             {/* Left Column - Sidebar */}
             <div className="lg:col-span-2">
               <div className="">
@@ -114,7 +114,7 @@ export default function AnimeDetails() {
             </div>
 
             {/* Middle Column - Trailer and Tabs */}
-            <div className="lg:col-span-8 space-y-6">
+            <div className="space-y-6 lg:col-span-8">
               {/* Trailer at the top */}
               {currentAnime.trailer?.embed_url && (
                 <div className="aspect-video">
@@ -129,7 +129,7 @@ export default function AnimeDetails() {
 
               {/* Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="w-full grid grid-cols-4">
+                <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="info">Info</TabsTrigger>
                   <TabsTrigger value="media">Media</TabsTrigger>
                   <TabsTrigger value="statistics">Statistics</TabsTrigger>
@@ -173,7 +173,7 @@ export default function AnimeDetails() {
             </div>
 
             {/* Right Column - Stats Grid */}
-            <div className="lg:col-span-2">
+            <div className="hidden lg:block lg:col-span-2">
               <div className="sticky top-26">
                 <AnimeStatsGrid anime={currentAnime} />
               </div>
