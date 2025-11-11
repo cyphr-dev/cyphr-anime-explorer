@@ -52,17 +52,17 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
       <Link to={`/anime/${anime.mal_id}`} className="group">
         <Card className="overflow-hidden transition-all hover:shadow-lg">
           <div className="flex flex-row h-56">
-            <div className="min-w-48 h-64 sm:h-auto relative overflow-hidden">
+            <div className="relative w-48 h-64 overflow-hidden sm:h-auto">
               <img
                 src={anime.images.jpg.large_image_url}
                 alt={anime.title}
-                className="w-full h-full object-cover"
+                className="object-cover w-full h-full"
                 loading="lazy"
               />
 
               <button
                 onClick={handleFavoriteClick}
-                className="absolute top-2 left-2 bg-white/90 hover:bg-white rounded-full p-2 transition-all"
+                className="absolute p-2 transition-all rounded-full top-2 left-2 bg-white/90 hover:bg-white"
                 aria-label={
                   isFavorite ? "Remove from favorites" : "Add to favorites"
                 }
@@ -74,7 +74,7 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
                 />
               </button>
             </div>
-            <div className="p-4 sm:p-6 flex flex-col justify-between flex-1">
+            <div className="flex flex-col justify-between flex-1 p-4 sm:p-6">
               <div className="flex flex-col gap-2">
                 <CardTitle className="line-clamp-1">
                   <h5>{anime.title}</h5>
@@ -96,10 +96,10 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
                   )}
                 </div>
               </div>
-              <div className="flex items-center gap-4 mt-3 w-full">
+              <div className="flex items-center w-full gap-4 mt-3">
                 {anime.score && (
                   <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                     <p>{anime.score.toFixed(1)}</p>
                   </div>
                 )}
@@ -121,16 +121,16 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
   return (
     <Link to={`/anime/${anime.mal_id}`} className="group">
       <Card className="h-full overflow-hidden transition-all hover:shadow-lg hover:scale-105">
-        <div className="aspect-3/4 relative overflow-hidden">
+        <div className="relative overflow-hidden aspect-3/4">
           <img
             src={anime.images.jpg.large_image_url}
             alt={anime.title}
-            className="w-full h-full object-cover"
+            className="object-cover w-full h-full"
             loading="lazy"
           />
           <button
             onClick={handleFavoriteClick}
-            className="cursor-pointer absolute top-2 right-2 bg-white/90 hover:bg-white rounded-full p-2 transition-all"
+            className="absolute p-2 transition-all rounded-full cursor-pointer top-2 right-2 bg-white/90 hover:bg-white"
             aria-label={
               isFavorite ? "Remove from favorites" : "Add to favorites"
             }
@@ -153,10 +153,10 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
             </div>
           </CardDescription>
         </CardContent>
-        <CardFooter className="px-4 pb-4 pt-0 flex items-center justify-between">
+        <CardFooter className="flex items-center justify-between px-4 pt-0 pb-4">
           {anime.score && (
             <div className="flex items-center gap-1">
-              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
               <p>{anime.score.toFixed(1)}</p>
             </div>
           )}
@@ -170,18 +170,18 @@ export function AnimeCard({ anime, viewMode = "grid" }: AnimeCardProps) {
 export function AnimeCardSkeleton() {
   return (
     <Card className="h-full overflow-hidden">
-      <div className="aspect-3/4 w-full bg-muted animate-pulse" />
+      <div className="w-full aspect-3/4 bg-muted animate-pulse" />
       <CardContent className="p-4">
-        <div className="h-4 w-full bg-muted animate-pulse rounded mb-2" />
-        <div className="h-4 w-3/4 bg-muted animate-pulse rounded" />
+        <div className="w-full h-4 mb-2 rounded bg-muted animate-pulse" />
+        <div className="w-3/4 h-4 rounded bg-muted animate-pulse" />
         <div className="flex gap-2 mt-3">
-          <div className="h-6 w-16 bg-muted animate-pulse rounded-full" />
-          <div className="h-6 w-16 bg-muted animate-pulse rounded-full" />
+          <div className="w-16 h-6 rounded-full bg-muted animate-pulse" />
+          <div className="w-16 h-6 rounded-full bg-muted animate-pulse" />
         </div>
       </CardContent>
-      <CardFooter className="px-4 pb-4 pt-0 flex items-center justify-between">
-        <div className="h-4 w-12 bg-muted animate-pulse rounded" />
-        <div className="h-4 w-16 bg-muted animate-pulse rounded" />
+      <CardFooter className="flex items-center justify-between px-4 pt-0 pb-4">
+        <div className="w-12 h-4 rounded bg-muted animate-pulse" />
+        <div className="w-16 h-4 rounded bg-muted animate-pulse" />
       </CardFooter>
     </Card>
   );
@@ -189,7 +189,7 @@ export function AnimeCardSkeleton() {
 
 export function AnimeListSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       {Array.from({ length: 25 }).map((_, i) => (
         <AnimeCardSkeleton key={i} />
       ))}
